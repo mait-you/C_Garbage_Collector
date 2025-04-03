@@ -6,13 +6,18 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 22:14:02 by hamza_hat         #+#    #+#             */
-/*   Updated: 2025/04/03 15:37:05 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/04/03 16:40:26 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //! ft_safe_malloc:
 #include <stdio.h>
 #include <stdlib.h>
+
+//? Macros for ft_safe_malloc keys:
+#define ALLOCATE 1
+#define FREE_ALL 0
+#define FREE_ONE 2
 
 //? ft_saf_malloc struct:
 typedef struct	s_mem_node
@@ -85,15 +90,15 @@ static void lst_add_back_malloc(t_mem_node **lst, void *value)
 //? Free a specific memory block and update the tracking list
 static void free_specific_node(t_mem_node **lst, void *to_delete)
 {
-    t_mem_node *current;
-    t_mem_node *prev;
-    
+    t_mem_node	*current;
+    t_mem_node	*prev;
+
     if (!lst || !*lst || !to_delete)
         return;
-        
+
     current = *lst;
     prev = NULL;
-    
+
     // Search for the node that contains the address
     while (current)
     {
@@ -101,18 +106,18 @@ static void free_specific_node(t_mem_node **lst, void *to_delete)
         {
             // Found the node, free the memory
             free(current->address);
-            
+
             // Remove node from the list
             if (prev)
                 prev->next = current->next;
             else
                 *lst = current->next;
-                
+
             // Free the node itself
             free(current);
             return;
         }
-        
+
         prev = current;
         current = current->next;
     }
@@ -126,7 +131,7 @@ void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete)
 
 	ptr = NULL;
 	// Allocate memory and track it.
-	if (key == 1)
+	if (key == ALLOCATE)
 	{
 		ptr = malloc(size);  // Allocate memory.
 		if (!ptr)
@@ -134,16 +139,15 @@ void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete)
 		lst_add_back_malloc(&mem_node, ptr); // Add the allocated memory block to the tracking list.
 		ft_bzero(ptr, size); // Zero out the allocated memory.
 	}
-	else if (key == 0) // Free all tracked memory and exit.
+	else if (key == FREE_ALL) // Free all tracked memory and exit.
 		free_list(&mem_node, exit_status);
-	else if (key == 2) // update all the nodes that contain  NULL ( freed )
+	else if (key == FREE_ONE) // update all the nodes that contain  NULL ( freed )
 		free_specific_node(&mem_node, to_delete);
 	return (ptr); // Return the allocated memory block.
 }
 
 
 //? int main :
-///*
 void f(){system("leaks a.out");}
 #include <stdio.h>
 int main(void)
@@ -167,7 +171,3 @@ int main(void)
 
     return 0;
 }
-
-//*/
-
-//todo: understand : the free_specific_node fun
