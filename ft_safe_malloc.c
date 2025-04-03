@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 22:14:02 by hamza_hat         #+#    #+#             */
-/*   Updated: 2025/04/03 16:44:09 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/04/03 16:48:56 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,12 +148,8 @@ void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete)
 
 
 //? int main :
-void f(){system("leaks a.out");}
-#include <stdio.h>
 int main(void)
 {
-	atexit(f);
-
     int *a = ft_safe_malloc(sizeof(int), 1, 1, 0);
     int *b = ft_safe_malloc(sizeof(int), 1, 1, 0);
     int *c = ft_safe_malloc(sizeof(int), 1, 1, 0);
