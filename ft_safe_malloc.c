@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_saf_malloc.c                                    :+:      :+:    :+:   */
+/*   ft_safe_malloc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 22:14:02 by hamza_hat         #+#    #+#             */
-/*   Updated: 2025/04/03 14:18:51 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/04/03 15:32:37 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //! ft_safe_malloc:
 #include <stdio.h>
 #include <stdlib.h>
-void	*ft_safe_malloc(size_t size, int key, int exit_status);
 
 //? ft_saf_malloc struct:
 typedef struct	s_mem_node
@@ -21,46 +20,6 @@ typedef struct	s_mem_node
 	void				*address;
 	struct s_mem_node	*next;
 }				t_mem_node;
-
-//? update the lst and free all nodes == NULL
-static void	update_lst(t_mem_node **lst)
-{
-	t_mem_node	*current;
-	t_mem_node	*prev;
-	t_mem_node	*tmp;
-
-	current = *lst;
-	prev = NULL;
-	while (current)
-	{
-		if (current->address == NULL)
-		{
-			tmp = current->next;
-			free(current);
-			if (prev)
-				prev->next = tmp; // Link previous node to the next valid node
-			else
-				*lst = tmp; // Update head if the first node is removed
-			current = tmp;
-		}
-		else
-		{
-			prev = current;
-			current = current->next;
-		}
-	}
-}
-
-//? use: ft_free((void **)&ptr); ( good practice to case it to (void **))
-void	ft_free(void **ptr)
-{
-	if (*ptr && ptr)
-	{
-		free(*ptr);
-		*ptr = NULL;
-		ft_safe_malloc(0, 2, 1);
-	}
-}
 
 //? Zero out a block of memory.
 static void ft_bzero(void *s, size_t len)
@@ -123,8 +82,44 @@ static void lst_add_back_malloc(t_mem_node **lst, void *value)
 	last->next = tmp;
 }
 
+//? Free a specific memory block and update the tracking list
+static void free_specific_node(t_mem_node **lst, void *to_delete)
+{
+    t_mem_node *current;
+    t_mem_node *prev;
+    
+    if (!lst || !*lst || !to_delete)
+        return;
+        
+    current = *lst;
+    prev = NULL;
+    
+    // Search for the node that contains the address
+    while (current)
+    {
+        if (current->address == to_delete)
+        {
+            // Found the node, free the memory
+            free(current->address);
+            
+            // Remove node from the list
+            if (prev)
+                prev->next = current->next;
+            else
+                *lst = current->next;
+                
+            // Free the node itself
+            free(current);
+            return;
+        }
+        
+        prev = current;
+        current = current->next;
+    }
+}
+
 //? Allocate memory, track it, and handle failures safely.
-void	*ft_safe_malloc(size_t size, int key, int exit_status)
+void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete)
 {
 	static t_mem_node	*mem_node; // Static list to track allocated memory.
 	void				*ptr; // Pointer to the allocated memory block.
@@ -142,7 +137,7 @@ void	*ft_safe_malloc(size_t size, int key, int exit_status)
 	else if (key == 0) // Free all tracked memory and exit.
 		free_list(&mem_node, exit_status);
 	else if (key == 2) // update all the nodes that contain  NULL ( freed )
-		update_lst(&mem_node);
+		free_specific_node(&mem_node, to_delete);
 	return (ptr); // Return the allocated memory block.
 }
 
@@ -171,27 +166,34 @@ void	*ft_safe_malloc(size_t size, int key, int exit_status)
 // 	ft_safe_malloc(0,0,0);
 // 	return (0);
 // }
+void f(){system("leaks a.out");}
 #include <stdio.h>
 int main(void)
 {
+	atexit(f);
     // Allocate three memory blocks
-    int *a = ft_safe_malloc(sizeof(int), 1, 1);
-    // int *b = ft_safe_malloc(sizeof(int), 1, 1);
-    // int *c = ft_safe_malloc(sizeof(int), 1, 1);
+    int *a = ft_safe_malloc(sizeof(int), 1, 1, 0);
+    int *b = ft_safe_malloc(sizeof(int), 1, 1, 0);
+    int *c = ft_safe_malloc(sizeof(int), 1, 1, 0);
     //
-    // *a = 10;
-    // *b = 20;
-    // *c = 30;
+    *a = 10;
+    *b = 20;
+    *c = 30;
 
     //printf("a = %d, b = %d, c = %d\n", *a, *b, *c);
 
     // Free memory
-    ft_free((void **)&a);
+	printf("a = %p\n", a);
+	a = ft_safe_malloc(0, 2, 1, a);
+	c = ft_safe_malloc(0, 2, 1, c);
+	b = ft_safe_malloc(0, 2, 1, b);
+	printf("%p %p %p\n", a, b, c);
+	// free(a);
     // ft_free((void **)&b);
     // ft_free((void **)&c);
     //
     // Free tracking list before exiting
-    ft_safe_malloc(0, 0, 0);
+    // ft_safe_malloc(0, 0, 0, 0);
 
     return 0;
 }
