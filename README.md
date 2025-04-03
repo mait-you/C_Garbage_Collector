@@ -22,6 +22,20 @@ The function `ft_safe_malloc` operates based on a **key system**:
 
 ---
 
+📌 Prototype
+
+void *ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete);
+
+🔍 Explanation of Parameters:
+
+size: The number of bytes to allocate (ignored for FREE_ONE and FREE_ALL).
+
+key: Determines the operation (ALLOCATE, FREE_ONE, or FREE_ALL).
+
+exit_status: Used when FREE_ALL is called to specify the exit status.
+
+to_delete: The pointer to free when FREE_ONE is used.
+
 ## 🏗️ Usage
 
 ### 🚀 Allocating Memory
@@ -82,5 +96,5 @@ int main(void)
 ## 📜 License
 This project is open-source. Feel free to use and modify it! 💡
 
-📢 **Made with ❤️ by Hamza_hat**
+📢 **Made by Hamza_hat**
 
