@@ -18,8 +18,13 @@ Allocates memory and manages it internally.
 Parameters:
 
 size: The size of memory to allocate in bytes.
+
 key: Determines the operation mode:
+
 1: Allocates memory of the given size.
+
 0: Frees all allocated memory and exits the program with the provided exit_status.
+
 exit_status: The exit status code used when freeing memory and terminating the program (applicable when key is 0).
+
 Returns: A pointer to the allocated memory if key is 1; otherwise, NULL.
