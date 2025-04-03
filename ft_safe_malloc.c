@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 22:14:02 by hamza_hat         #+#    #+#             */
-/*   Updated: 2025/04/03 16:40:26 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/04/03 16:44:09 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,20 @@
 #define FREE_ONE 2
 
 //? ft_saf_malloc struct:
-typedef struct	s_mem_node
+typedef struct s_mem_node
 {
 	void				*address;
 	struct s_mem_node	*next;
 }				t_mem_node;
 
 //? Zero out a block of memory.
-static void ft_bzero(void *s, size_t len)
+static void	ft_bzero(void *s, size_t len)
 {
-	unsigned char *tmp;  // Temporary pointer to traverse the memory block.
+	unsigned char	*tmp; // Temporary pointer to traverse the memory block.
 
-	tmp = (unsigned char *)s;  // Cast the input pointer to unsigned char.
+	tmp = (unsigned char *)s; // Cast the input pointer to unsigned char.
 	while (len--)
-		*tmp++ = 0;  // Set each byte to 0.
+		*tmp++ = 0; // Set each byte to 0.
 }
 
 //? Free all allocated memory in the memory tracking list and exit.
