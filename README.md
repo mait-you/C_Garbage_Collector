@@ -22,7 +22,7 @@ The function `ft_safe_malloc` operates based on a **key system**:
 
 ---
 
-📌 Prototype
+## 📌 Prototype
 
 void *ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete);
 
