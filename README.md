@@ -27,7 +27,7 @@ The function `ft_safe_malloc` operates based on a **key system**:
 ### 🚀 Allocating Memory
 To allocate memory, use:
 ```c
-int *ptr = (int *)ft_safe_malloc(sizeof(int), ALLOCATE, 0, NULL);
+int *ptr = (int *)ft_safe_malloc(sizeof(int), ALLOCATE, 1, NULL);
 ```
 ✅ This allocates memory and tracks it.
 ✅ If allocation fails, all tracked memory is freed, and the program exits.
@@ -35,7 +35,7 @@ int *ptr = (int *)ft_safe_malloc(sizeof(int), ALLOCATE, 0, NULL);
 ### 🗑️ Freeing a Specific Pointer
 To free a single allocated block:
 ```c
-ft_safe_malloc(0, FREE_ONE, 0, ptr);
+ft_safe_malloc(0, FREE_ONE, 1, ptr);
 ```
 ✅ This removes `ptr` from tracking and frees its memory.
 
@@ -54,15 +54,15 @@ ft_safe_malloc(0, FREE_ALL, 0, NULL);
 
 int main(void)
 {
-    int *a = ft_safe_malloc(sizeof(int), ALLOCATE, 0, NULL);
-    int *b = ft_safe_malloc(sizeof(int), ALLOCATE, 0, NULL);
+    int *a = ft_safe_malloc(sizeof(int), ALLOCATE, 1, NULL);
+    int *b = ft_safe_malloc(sizeof(int), ALLOCATE, 1, NULL);
     
     *a = 42;
     *b = 99;
     
     printf("a = %d, b = %d\n", *a, *b);
     
-    ft_safe_malloc(0, FREE_ONE, 0, a); // Free only 'a'
+    ft_safe_malloc(0, FREE_ONE, 1, a); // Free only 'a'
     ft_safe_malloc(0, FREE_ALL, 0, NULL); // Free everything and exit
     
     return 0;
@@ -82,5 +82,5 @@ int main(void)
 ## 📜 License
 This project is open-source. Feel free to use and modify it! 💡
 
-📢 **Made with ❤️ by Hamza**
+📢 **Made with ❤️ by Hamza_hat**
 
