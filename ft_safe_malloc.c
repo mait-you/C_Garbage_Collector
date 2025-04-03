@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 22:14:02 by hamza_hat         #+#    #+#             */
-/*   Updated: 2025/04/03 15:32:37 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/04/03 15:37:05 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,58 +144,30 @@ void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete)
 
 //? int main :
 ///*
-
-// int main (void)
-// {
-// 	int *nb_1 = ft_safe_malloc(sizeof(int) * 1, 1, 1);
-// 	int *nb_2 = ft_safe_malloc(sizeof(int) * 1, 1, 1);
-// 	int *nb_3 = ft_safe_malloc(sizeof(int) * 1, 1, 1);
-
-// 	*nb_1 = 1337;
-// 	*nb_2 = 42;
-// 	*nb_3 = 21;
-
-// 	printf("nb_1 = %d\n", *nb_1);
-// 	printf("nb_2 = %d\n", *nb_2);
-// 	printf("nb_3 = %d\n", *nb_3);
-
-// 	ft_free((void **)&nb_1);
-// 	ft_free((void **)&nb_2);
-// 	// ft_free((void **)&nb_3);
-// //? free the lst:
-// 	ft_safe_malloc(0,0,0);
-// 	return (0);
-// }
 void f(){system("leaks a.out");}
 #include <stdio.h>
 int main(void)
 {
 	atexit(f);
-    // Allocate three memory blocks
+
     int *a = ft_safe_malloc(sizeof(int), 1, 1, 0);
     int *b = ft_safe_malloc(sizeof(int), 1, 1, 0);
     int *c = ft_safe_malloc(sizeof(int), 1, 1, 0);
-    //
+
     *a = 10;
     *b = 20;
     *c = 30;
 
-    //printf("a = %d, b = %d, c = %d\n", *a, *b, *c);
-
-    // Free memory
 	printf("a = %p\n", a);
 	a = ft_safe_malloc(0, 2, 1, a);
 	c = ft_safe_malloc(0, 2, 1, c);
 	b = ft_safe_malloc(0, 2, 1, b);
 	printf("%p %p %p\n", a, b, c);
-	// free(a);
-    // ft_free((void **)&b);
-    // ft_free((void **)&c);
-    //
-    // Free tracking list before exiting
-    // ft_safe_malloc(0, 0, 0, 0);
+    ft_safe_malloc(0, 0, 0, 0);
 
     return 0;
 }
 
 //*/
+
+//todo: understand : the free_specific_node fun
