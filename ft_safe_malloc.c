@@ -148,7 +148,6 @@ void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete)
 	return (ptr); // Return the allocated memory block. / or NULL 
 }
 
-
 //? int main :
 // int main(void)
 // {
