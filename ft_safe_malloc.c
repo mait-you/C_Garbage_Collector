@@ -93,7 +93,7 @@ static void free_specific_node(t_mem_node **lst, void *to_delete)
     t_mem_node	*current;
     t_mem_node	*prev;
 
-    if (!lst || !*lst || !to_delete)
+    if (!lst || !to_delete)
         return;
 
     current = *lst;
@@ -150,76 +150,33 @@ void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete)
 
 
 //? int main :
-int main(void)
-{
-    int *a = ft_safe_malloc(sizeof(int), 1, 1, 0);
-    int *b = ft_safe_malloc(sizeof(int), 1, 1, 0);
-    int *c = ft_safe_malloc(sizeof(int), 1, 1, 0);
+// int main(void)
+// {
+//     // Allocate memory via ft_safe_malloc (tracked)
+//     int *a = ft_safe_malloc(sizeof(int), ALLOCATE, 1, NULL);
+//     int *b = ft_safe_malloc(sizeof(int), ALLOCATE, 1, NULL);
+//     int *c = ft_safe_malloc(sizeof(int), ALLOCATE, 1, NULL);
+//
+//     *a = 10;
+//     *b = 20;
+//     *c = 30;
+//
+//     printf("Tracked pointers:\n");
+//     printf("a = %d, b = %d, c = %d\n", *a, *b, *c);
+//
+//     // Allocate memory using malloc (untracked)
+//     int *x = malloc(sizeof(int));
+//     *x = 999;
+//     printf("Untracked pointer x = %d\n", *x);
+//
+//     // Free one tracked ptr
+//     ft_safe_malloc(0, FREE_ONE, 0, a);
+//     // Free untracked ptr
+//     ft_safe_malloc(0, FREE_ONE, 0, x);  // This will safely free `x` even if not tracked
+//
+//     // Final cleanup
+//     ft_safe_malloc(0, FREE_ALL, 0, NULL);
+//
+//     return 0;
+// }
 
-	int *e = malloc(sizeof(int) * 1);
-	int *f = malloc(sizeof(int) * 1);
-
-    *a = 10;
-    *b = 20;
-    *c = 30;
-
-	printf("a = %p\n", a);
-	// free memory address that are linked to t_mem_node list
-	a = ft_safe_malloc(0, FREE_ONE, 1, a);
-	c = ft_safe_malloc(0, FREE_ONE, 1, c);
-	b = ft_safe_malloc(0, FREE_ONE, 1, b);
-
-	// free any ptr also if it's not in the t_mem_node list
-	e = ft_safe_malloc(0, FREE_ONE, 1, e);
-	f = ft_safe_malloc(0, FREE_ONE, 1, f);
-	printf("%p %p %p %p %p\n", a, b, c, e, f); // expected : everything = NULL
-    ft_safe_malloc(0, 0, 0, 0);
-
-    return 0;
-}
-
-// todo : add option of free a ptr if it's not in the ft_malloc node
-
-/*
-#include <stdio.h>
-#include <stdlib.h>
-
-// Prototypes
-void *ft_safe_malloc(size_t size, int key, int exit_status, void *ptr);
-
-// Macro keys
-#define ALLOCATE 1
-#define FREE_ALL 0
-#define FREE_ONE 2
-
-int main(void)
-{
-    // Allocate memory via ft_safe_malloc (tracked)
-    int *a = ft_safe_malloc(sizeof(int), ALLOCATE, 1, NULL);
-    int *b = ft_safe_malloc(sizeof(int), ALLOCATE, 1, NULL);
-    int *c = ft_safe_malloc(sizeof(int), ALLOCATE, 1, NULL);
-
-    *a = 10;
-    *b = 20;
-    *c = 30;
-
-    printf("Tracked pointers:\n");
-    printf("a = %d, b = %d, c = %d\n", *a, *b, *c);
-
-    // Allocate memory using malloc (untracked)
-    int *x = malloc(sizeof(int));
-    *x = 999;
-    printf("Untracked pointer x = %d\n", *x);
-
-    // Free one tracked ptr
-    ft_safe_malloc(0, FREE_ONE, 0, a);
-    // Free untracked ptr
-    ft_safe_malloc(0, FREE_ONE, 0, x);  // This will safely free `x` even if not tracked
-
-    // Final cleanup
-    ft_safe_malloc(0, FREE_ALL, 0, NULL);
-
-    return 0;
-}
-
-*/
