@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 22:14:02 by hamza_hat         #+#    #+#             */
-/*   Updated: 2025/04/11 11:24:18 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/04/11 14:57:22 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,18 +92,21 @@ static void free_specific_node(t_mem_node **lst, void *to_delete)
 {
     t_mem_node	*current;
     t_mem_node	*prev;
+	// int			key;
 
     if (!lst || !*lst || !to_delete)
         return;
 
     current = *lst;
     prev = NULL;
+	// key = 0;
 
     // Search for the node that contains the address
     while (current)
     {
         if (current->address == to_delete)
         {
+			// key = 1;
             // Found the node, free the memory
             free(current->address);
 
@@ -121,6 +124,9 @@ static void free_specific_node(t_mem_node **lst, void *to_delete)
         prev = current;
         current = current->next;
     }
+	//? free any ptr 
+	// if (key == 0)
+		free(to_delete);
 }
 
 //? Allocate memory, track it, and handle failures safely.
@@ -143,7 +149,7 @@ void	*ft_safe_malloc(size_t size, int key, int exit_status, void *to_delete)
 		free_list(&mem_node, exit_status);
 	else if (key == FREE_ONE) // update all the nodes that contain  NULL ( freed )
 		free_specific_node(&mem_node, to_delete);
-	return (ptr); // Return the allocated memory block.
+	return (ptr); // Return the allocated memory block. / or NULL 
 }
 
 
@@ -159,13 +165,13 @@ int main(void)
     *c = 30;
 
 	printf("a = %p\n", a);
-	a = ft_safe_malloc(0, 2, 1, a);
-	c = ft_safe_malloc(0, 2, 1, c);
-	b = ft_safe_malloc(0, 2, 1, b);
+	a = ft_safe_malloc(0, FREE_ONE, 1, a);
+	c = ft_safe_malloc(0, FREE_ONE, 1, c);
+	b = ft_safe_malloc(0, FREE_ONE, 1, b);
 	printf("%p %p %p\n", a, b, c);
     ft_safe_malloc(0, 0, 0, 0);
 
     return 0;
 }
 
-// todo : add opetion of free a ptr if it's not in the ft_malloc node
+// todo : add option of free a ptr if it's not in the ft_malloc node
