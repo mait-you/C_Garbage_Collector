@@ -6,7 +6,7 @@
 /*   By: hbenmoha <hbenmoha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 22:14:02 by hamza_hat         #+#    #+#             */
-/*   Updated: 2025/04/03 16:48:56 by hbenmoha         ###   ########.fr       */
+/*   Updated: 2025/04/06 15:43:11 by hbenmoha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,3 +167,5 @@ int main(void)
 
     return 0;
 }
+
+// todo : add opetion of free a ptr if it's not in the ft_malloc node 
