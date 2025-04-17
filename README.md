@@ -90,8 +90,7 @@ This project is open-source. Feel free to use and modify it! 💡
 
 ## ⭐ Support
 
-If you find this project helpful or interesting, feel free to give it a **star** — it helps others discover it too!
-"""
+If you find this project helpful or interesting, feel free to give it a **star** ⭐ — it helps others discover it too!
 
 📢 **Made by Hamza_hat**
 
