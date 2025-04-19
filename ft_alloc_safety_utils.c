@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 16:25:38 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/19 16:36:48 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 16:59:36 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	ptr = (char *)dst;
 	while (i < n)
 	{
-		*(ptr++) = *(const char *)(src++);
+		*(ptr++) = *((const char *)src++);
 		i++;
 	}
 	return (dst);

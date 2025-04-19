@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:46:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/19 16:55:37 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 17:01:00 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,7 @@ void	*free_specific(void **ptr_array, const void *to_delete, size_t size)
 {
 	int	i;
 
-	if (!to_delete)
-		return (NULL);
-	if (MEMEORY_FENCING)
+	if (MEMORY_FENCING)
 		free_specific_memory_fencing(ptr_array, to_delete, size);
 	i = 0;
 	while (i < MAX_ALLOCATIONS)
@@ -111,7 +109,7 @@ void	*free_all(void **ptr_array, size_t size)
 {
 	int	i;
 
-	if (MEMEORY_FENCING)
+	if (MEMORY_FENCING)
 		free_all_memory_fencing(ptr_array, size);
 	i = 0;
 	while (i < MAX_ALLOCATIONS)
@@ -140,8 +138,8 @@ void	*allocate_ptr(size_t size[2], void **ptr_array)
 {
 	void	*ptr;
 
-	if (MEMEORY_FENCING)
-		free_all_memory_fencing(ptr_array, size[0] * size[1]);
+	if (MEMORY_FENCING)
+		allocate_ptr_memory_fencing(size[0] * size[1], ptr_array);
 	ptr = ft_calloc(size[0], size[1]);
 	if (!ptr)
 	{

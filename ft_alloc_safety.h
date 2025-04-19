@@ -6,12 +6,12 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:44:47 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/19 16:38:57 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 16:58:28 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_CALLOC_SAFETY_H
-# define FT_CALLOC_SAFETY_H
+#ifndef FT_ALLOC_SAFETY_H
+# define FT_ALLOC_SAFETY_H
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -23,8 +23,8 @@
 #  define BUFFER_SIZE 100
 # endif
 
-# ifndef MEMEORY_FENCING
-#  define MEMEORY_FENCING false
+# ifndef MEMORY_FENCING
+#  define MEMORY_FENCING false
 # endif
 
 # define MAX_ALLOCATIONS 1024
