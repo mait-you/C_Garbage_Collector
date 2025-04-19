@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:44:47 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/19 14:47:41 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 15:00:10 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,13 @@
 #  define BUFFER_SIZE 100
 # endif
 
+# ifndef MEMEORY_FENCING
+#  define MEMEORY_FENCING false
+# endif
+
 # define MAX_ALLOCATIONS 1024
+# define GUARD_SIZE 8
+# define GUARD_PATTERN 0xAB
 
 typedef enum e_action
 {
