@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:46:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/18 18:47:03 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 09:35:31 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	*free_specific(void **ptr_array, void *to_delete)
 	return (NULL);
 }
 
-static void	*allocate_ptr(size_t size[2], void *ptr_array[MAX_ALLOCATIONS])
+static void	*allocate_ptr(size_t size[2], void **ptr_array)
 {
 	void	*ptr;
 
