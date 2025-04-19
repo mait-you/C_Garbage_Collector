@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 16:25:38 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/19 14:48:09 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 16:13:48 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,21 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 		i++;
 	}
 	return (dst);
+}
+
+/**
+ * @brief 
+ * 
+ * @param s 
+ * @param fd 
+ */
+void	ft_putendl_fd(char *s, int fd)
+{
+	if (!s)
+		return ;
+	if (fd == -1)
+		return ;
+	while (*s)
+		write(fd, s++, 1);
+	write(fd, "\n", 1);
 }

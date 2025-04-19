@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:46:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/19 16:04:47 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 16:11:14 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,13 @@
 void *realloc_ptr(size_t size[2], void **ptr_array, void *to_delete)
 {
     void	*new_ptr;
-    int		i;
     
     new_ptr = allocate_ptr(size, ptr_array);
     if (!new_ptr)
         return (NULL);
     if (to_delete)
     {
-        ft_memmove(new_ptr, to_delete, size[0] * size[1]);
+        ft_memcpy(new_ptr, to_delete, size[0] * size[1]);
         free_specific(ptr_array, to_delete, size[0] * size[1]);
     }
     return (new_ptr);
@@ -77,7 +76,7 @@ void	*free_specific(void **ptr_array, const void *to_delete, size_t size)
 	if (!to_delete)
 		return (NULL);
 	if (MEMEORY_FENCING)
-		free_specific_memory_fencing(ptr_array, to_delete);
+		free_specific_memory_fencing(ptr_array, to_delete, size);
 	i = 0;
 	while (i < MAX_ALLOCATIONS)
 	{

@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:46:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/19 16:02:21 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 16:14:16 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static void *get_original_ptr(void *user_ptr)
  * @param to_delete The pointer to be freed.
  * @return void* NULL after the pointer is freed.
  */
-void	*free_specific_memory_fencing(void **ptr_array, const void *to_delete)
+void	*free_specific_memory_fencing(void **ptr_array, const void *to_delete, size_t size)
 {
 	int		i;
 	void	*original_ptr;
@@ -123,7 +123,7 @@ void	*free_specific_memory_fencing(void **ptr_array, const void *to_delete)
 	{
         if (ptr_array[i] == original_ptr)
 		{
-            if (check_memory_fencing((void *)to_delete, 0))
+            if (check_memory_fencing((void *)to_delete, size))
                 ft_putendl_fd("Error: Memory corruption detected", STDERR_FILENO);
             free(original_ptr);
             ptr_array[i] = NULL;
