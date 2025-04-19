@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_safe_calloc.h                                   :+:      :+:    :+:   */
+/*   ft_alloc_safety.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:44:47 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/19 13:27:43 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 14:47:41 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_SAFE_CALLOC_H
-# define FT_SAFE_CALLOC_H
+#ifndef FT_CALLOC_SAFETY_H
+# define FT_CALLOC_SAFETY_H
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -28,12 +28,20 @@ typedef enum e_action
 {
 	ALLOCATE,
 	FREE_ALL,
-	FREE_ONE
+	FREE_ONE,
+	GET_USAGE,
+	REALLOC
 }	t_action;
 
 void	*ft_memset(void *b, int c, size_t len);
 void	*ft_calloc(size_t count, size_t size);
-void	*ft_safe_calloc(\
-	size_t size[2], t_action key, int exit_status, void *to_delete);
+void	*allocate_ptr(size_t size[2], void **ptr_array);
+int		add_to_tracking(void **ptr_array, void *ptr);
+void	*free_all(void **ptr_array);
+void	*free_specific(void **ptr_array, const void *to_delete);
+int		get_allocation_count(void **ptr_array);
+void	*ft_alloc_safety(
+	size_t size[2], t_action action, void *to_delete
+	);
 
 #endif

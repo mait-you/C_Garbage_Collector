@@ -1,16 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_safe_calloc.c                                   :+:      :+:    :+:   */
+/*   ft_alloc_safety_action.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:46:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/19 13:26:51 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 14:44:47 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_safe_calloc.h"
+#include "ft_alloc_safety.h"
+
+/**
+ * @brief Reallocates memory for a specific pointer without using realloc,
+ *        manually allocating new memory, copying the old data, and freeing the old pointer.
+ * 
+ * @param size The size of the memory to be allocated (array of 2 size_t elements).
+ * @param ptr_array The array of pointers being tracked.
+ * @param to_delete The pointer to be reallocated.
+ * @return void* The reallocated memory or NULL if allocation failed.
+ */
+void *realloc_ptr(size_t size[2], void **ptr_array, void *to_delete)
+{
+    void	*new_ptr;
+    int		i;
+    
+    new_ptr = allocate_ptr(size, ptr_array);
+    if (!new_ptr)
+        return (NULL);
+    if (to_delete)
+    {
+        ft_memmove(new_ptr, to_delete, size[0] * size[1]);
+        free_specific(ptr_array, to_delete);
+    }
+    return (new_ptr);
+}
+
+/**
+ * @brief Counts the number of non-NULL pointers in the tracking array.
+ * 
+ * @param ptr_array The array of pointers being tracked.
+ * @return int The number of active allocations.
+ */
+int	get_allocation_count(void **ptr_array)
+{
+	int	count;
+	int	i;
+
+	count = 0;
+	i = 0;
+	while (i < MAX_ALLOCATIONS)
+	{
+		if (ptr_array[i] != NULL)
+			count++;
+		i++;
+	}
+	return (count);
+}
 
 /**
  * @brief Frees a specific pointer from the tracking array. If the pointer is 
@@ -22,7 +69,7 @@
  * @param to_delete The pointer to be freed.
  * @return void* NULL after the pointer is freed.
  */
-static void	*free_specific(void **ptr_array, const void *to_delete)
+void	*free_specific(void **ptr_array, const void *to_delete)
 {
 	int	i;
 
@@ -51,7 +98,7 @@ static void	*free_specific(void **ptr_array, const void *to_delete)
  * @param ptr_array The array of pointers being tracked.
  * @return void* NULL after all memory is freed.
  */
-static void	*free_all(void **ptr_array)
+void	*free_all(void **ptr_array)
 {
 	int	i;
 
@@ -69,36 +116,6 @@ static void	*free_all(void **ptr_array)
 }
 
 /**
- * @brief Adds a pointer to the tracking array if there's space. If the array 
- *        is full, it prints an error message and returns 0. This function 
- *        ensures the array doesn't overflow.
- * 
- * @param ptr_array The array where pointers are tracked.
- * @param ptr The pointer to be added to the array.
- * @return int Returns 1 if the pointer was successfully added, 0 if the array
- *        is full.
- */
-static int	add_to_tracking(void **ptr_array, void *ptr)
-{
-	int	i;
-
-	if (!ptr)
-		return (0);
-	i = 0;
-	while (i < MAX_ALLOCATIONS)
-	{
-		if (ptr_array[i] == NULL)
-		{
-			ptr_array[i] = ptr;
-			return (1);
-		}
-		i++;
-	}
-	ft_putendl_fd("Error: Maximum allocation limit reached", STDERR_FILENO);
-	return (0);
-}
-
-/**
  * @brief Allocates memory using `ft_calloc`, then adds the allocated pointer 
  *        to the tracking array. If allocation fails or the array is full, 
  *        it frees the memory to avoid leaks.
@@ -108,7 +125,7 @@ static int	add_to_tracking(void **ptr_array, void *ptr)
  * @param ptr_array The array of pointers being tracked.
  * @return void* The allocated memory or NULL if allocation fails.
  */
-static void	*allocate_ptr(size_t size[2], void **ptr_array)
+void	*allocate_ptr(size_t size[2], void **ptr_array)
 {
 	void	*ptr;
 
@@ -127,35 +144,3 @@ static void	*allocate_ptr(size_t size[2], void **ptr_array)
 	return (ptr);
 }
 
-/**
- * @brief Safely allocates, frees all allocations, or frees a specific
- *  	  allocation based on the provided action. This function helps manage
- *        memory allocations and deallocations efficiently while tracking the 
- *        allocations to prevent memory leaks.
- * 
- * @param size The size of the memory to be allocated (array of 2 size_t
- * 		  elements).
- * @param action The action to be performed (ALLOCATE, FREE_ALL, or FREE_ONE).
- * @param to_delete The pointer to delete (used when action is FREE_ONE).
- * @return void* The allocated memory, NULL if an error occurs or if the memory 
- *               was freed successfully.
- */
-void	*ft_safe_calloc_thread_safety(
-	size_t size[2], t_action action, void *to_delete
-	)
-{
-	static void				*ptr_array[MAX_ALLOCATIONS] = {NULL};
-	static pthread_mutex_t	init_mutex = PTHREAD_MUTEX_INITIALIZER;
-	void					*ptr;
-
-	pthread_mutex_lock(&init_mutex);
-	ptr = NULL;
-	if (action == ALLOCATE)
-		ptr = allocate_ptr(size, ptr_array);
-	else if (action == FREE_ALL)
-		ptr = free_all(ptr_array);
-	else if (action == FREE_ONE)
-		ptr = free_specific(ptr_array, to_delete);
-	pthread_mutex_unlock(&init_mutex);
-	return (ptr);
-}
