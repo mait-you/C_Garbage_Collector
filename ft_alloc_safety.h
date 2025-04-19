@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:44:47 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/19 15:00:10 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 16:04:35 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <stdint.h>
 # include <pthread.h>
+# include <stdbool.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 100
@@ -39,12 +40,17 @@ typedef enum e_action
 	REALLOC
 }	t_action;
 
+
+void	*allocate_ptr_memory_fencing(size_t size[2], void **ptr_array);
+void	*free_all_memory_fencing(void **ptr_array, size_t size);
+void	*free_specific_memory_fencing(void **ptr_array, const void *to_delete);
+
 void	*ft_memset(void *b, int c, size_t len);
 void	*ft_calloc(size_t count, size_t size);
 void	*allocate_ptr(size_t size[2], void **ptr_array);
 int		add_to_tracking(void **ptr_array, void *ptr);
-void	*free_all(void **ptr_array);
-void	*free_specific(void **ptr_array, const void *to_delete);
+void	*free_all(void **ptr_array, size_t size);
+void	*free_specific(void **ptr_array, const void *to_delete, size_t size);
 int		get_allocation_count(void **ptr_array);
 void	*ft_alloc_safety(
 	size_t size[2], t_action action, void *to_delete

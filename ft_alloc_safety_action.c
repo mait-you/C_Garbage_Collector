@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:46:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/19 14:44:47 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 16:04:47 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 /**
  * @brief Reallocates memory for a specific pointer without using realloc,
- *        manually allocating new memory, copying the old data, and freeing the old pointer.
+ *        manually allocating new memory, copying the old data, and freeing 
+ *        the old pointer.
  * 
  * @param size The size of the memory to be allocated (array of 2 size_t elements).
  * @param ptr_array The array of pointers being tracked.
@@ -32,7 +33,7 @@ void *realloc_ptr(size_t size[2], void **ptr_array, void *to_delete)
     if (to_delete)
     {
         ft_memmove(new_ptr, to_delete, size[0] * size[1]);
-        free_specific(ptr_array, to_delete);
+        free_specific(ptr_array, to_delete, size[0] * size[1]);
     }
     return (new_ptr);
 }
@@ -69,12 +70,14 @@ int	get_allocation_count(void **ptr_array)
  * @param to_delete The pointer to be freed.
  * @return void* NULL after the pointer is freed.
  */
-void	*free_specific(void **ptr_array, const void *to_delete)
+void	*free_specific(void **ptr_array, const void *to_delete, size_t size)
 {
 	int	i;
 
 	if (!to_delete)
 		return (NULL);
+	if (MEMEORY_FENCING)
+		free_specific_memory_fencing(ptr_array, to_delete);
 	i = 0;
 	while (i < MAX_ALLOCATIONS)
 	{
@@ -98,10 +101,12 @@ void	*free_specific(void **ptr_array, const void *to_delete)
  * @param ptr_array The array of pointers being tracked.
  * @return void* NULL after all memory is freed.
  */
-void	*free_all(void **ptr_array)
+void	*free_all(void **ptr_array, size_t size)
 {
 	int	i;
 
+	if (MEMEORY_FENCING)
+		free_all_memory_fencing(ptr_array, size);
 	i = 0;
 	while (i < MAX_ALLOCATIONS)
 	{
@@ -129,16 +134,18 @@ void	*allocate_ptr(size_t size[2], void **ptr_array)
 {
 	void	*ptr;
 
+	if (MEMEORY_FENCING)
+		free_all_memory_fencing(ptr_array, size[0] * size[1]);
 	ptr = ft_calloc(size[0], size[1]);
 	if (!ptr)
 	{
-		free_all(ptr_array);
+		free_all(ptr_array, size[0] * size[1]);
 		return (NULL);
 	}
 	if (!add_to_tracking(ptr_array, ptr))
 	{
 		free(ptr);
-		free_all(ptr_array);
+		free_all(ptr_array, size[0] * size[1]);
 		return (NULL);
 	}
 	return (ptr);

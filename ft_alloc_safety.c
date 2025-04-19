@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:46:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/19 14:44:17 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 16:00:34 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	*ft_alloc_safety(
 	if (action == ALLOCATE)
 		ptr = allocate_ptr(size, ptr_array);
 	else if (action == FREE_ALL)
-		ptr = free_all(ptr_array);
+		ptr = free_all(ptr_array, size[0] * size[1]);
 	else if (action == FREE_ONE)
-		ptr = free_specific(ptr_array, to_delete);
+		ptr = free_specific(ptr_array, to_delete, size[0] * size[1]);
 	else if (action == GET_USAGE)
 		ptr = (void *)(uintptr_t)get_allocation_count(ptr_array);
 	else if (action == REALLOC)
@@ -48,4 +48,3 @@ void	*ft_alloc_safety(
 	pthread_mutex_unlock(&init_mutex);
 	return (ptr);
 }
-
