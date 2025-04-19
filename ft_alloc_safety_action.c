@@ -6,7 +6,7 @@
 /*   By: mait-you <mait-you@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 18:46:19 by mait-you          #+#    #+#             */
-/*   Updated: 2025/04/19 16:11:14 by mait-you         ###   ########.fr       */
+/*   Updated: 2025/04/19 16:55:37 by mait-you         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,25 @@
  *        manually allocating new memory, copying the old data, and freeing 
  *        the old pointer.
  * 
- * @param size The size of the memory to be allocated (array of 2 size_t elements).
+ * @param size The size of the memory to be allocated (array of 2 size_t 
+ *        elements).
  * @param ptr_array The array of pointers being tracked.
  * @param to_delete The pointer to be reallocated.
  * @return void* The reallocated memory or NULL if allocation failed.
  */
-void *realloc_ptr(size_t size[2], void **ptr_array, void *to_delete)
+void	*realloc_ptr(size_t size[2], void **ptr_array, void *to_delete)
 {
-    void	*new_ptr;
-    
-    new_ptr = allocate_ptr(size, ptr_array);
-    if (!new_ptr)
-        return (NULL);
-    if (to_delete)
-    {
-        ft_memcpy(new_ptr, to_delete, size[0] * size[1]);
-        free_specific(ptr_array, to_delete, size[0] * size[1]);
-    }
-    return (new_ptr);
+	void	*new_ptr;
+
+	new_ptr = allocate_ptr(size, ptr_array);
+	if (!new_ptr)
+		return (NULL);
+	if (to_delete)
+	{
+		ft_memcpy(new_ptr, to_delete, size[0] * size[1]);
+		free_specific(ptr_array, to_delete, size[0] * size[1]);
+	}
+	return (new_ptr);
 }
 
 /**
@@ -84,6 +85,12 @@ void	*free_specific(void **ptr_array, const void *to_delete, size_t size)
 		{
 			free(ptr_array[i]);
 			ptr_array[i] = NULL;
+			return (NULL);
+		}
+		else if (ptr_array[i] == NULL && to_delete == ptr_array[i])
+		{
+			ft_putendl_fd(
+				"Warning: Attempt to free an already freed", STDERR_FILENO);
 			return (NULL);
 		}
 		i++;
@@ -149,4 +156,3 @@ void	*allocate_ptr(size_t size[2], void **ptr_array)
 	}
 	return (ptr);
 }
-
